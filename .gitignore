@@ -1,0 +1,29 @@
+# Compiled class files
+*.class
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# NetBeans
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+
+# Maven / Gradle build output
+target/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
