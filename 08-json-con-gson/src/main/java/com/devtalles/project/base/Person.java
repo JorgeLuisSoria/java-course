@@ -1,4 +1,4 @@
-package com.devtalles.project;
+package com.devtalles.project.base;
 
 public class Person {
     private String name;
