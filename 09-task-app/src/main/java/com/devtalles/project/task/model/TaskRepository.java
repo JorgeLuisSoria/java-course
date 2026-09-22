@@ -30,6 +30,32 @@ public class TaskRepository {
         return null;
     }
 
+    public List<Task> findCompletedTasks() throws TaskException {
+        List<Task> completedTasks = new ArrayList<>();
+        for (Task task : tasks) {
+            if (task.getCompleted()) {
+                completedTasks.add(task);
+            }
+        }
+        if (completedTasks.isEmpty()) {
+            throw new TaskException("No completed tasks found");
+        }
+        return completedTasks;
+    }
+
+    public List<Task> findPendingTasks() throws TaskException {
+        List<Task> pendingTasks = new ArrayList<>();
+        for (Task task : tasks) {
+            if (!task.getCompleted()) {
+                pendingTasks.add(task);
+            }
+        }
+        if (pendingTasks.isEmpty()) {
+            throw new TaskException("No pending tasks found");
+        }
+        return pendingTasks;
+    }
+
     public void remove(String id) throws TaskException {
         Task task = findById(id);
         if (task == null) {
@@ -80,6 +106,13 @@ public class TaskRepository {
         TaskPersistence.saveTasks(tasks);
     }
 
-
+    public void updateTaskByCompletedField(String id, Boolean completed) throws TaskException {
+        int index = findIndexById(id);
+        if (index == -1) {
+            throw new TaskException("Task not found");
+        }
+        tasks.get(index).setCompleted(completed);
+        TaskPersistence.saveTasks(tasks);
+    }
 
 }

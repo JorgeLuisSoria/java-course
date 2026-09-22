@@ -35,10 +35,34 @@ public class TaskController {
         }
     }
 
+    public void showsCompletedTasks() throws TaskException {
+        List<Task> completedTasks = this.taskRepository.findCompletedTasks();
+        for (Task task : completedTasks) {
+            System.out.println(task);
+        }
+    }
+
+    public void showsPendingTasks() throws TaskException {
+        List<Task> pendingTasks = this.taskRepository.findPendingTasks();
+        for (Task task : pendingTasks) {
+            System.out.println(task);
+        }
+    }
+
     public void updateTask(String id, String title, String description, Boolean completed) throws TaskValidationException, TaskException {
         validateTaskData(id, title, description, completed);
         Task taskToUpdate = new Task(id, title, description, completed);
         this.taskRepository.updateTask(taskToUpdate);
+    }
+
+    public void updateTaskCompleted(String id, Boolean completed) throws TaskValidationException, TaskException {
+        validateTaskData(id, completed);
+        this.taskRepository.updateTaskByCompletedField(id, completed);
+
+    }
+
+    public void updateTaskPending() {
+
     }
 
     private void validateTaskData(String id, String title, String description, Boolean completed) throws TaskValidationException {
@@ -50,6 +74,15 @@ public class TaskController {
         }
         if (description == null || description.trim().isEmpty()) {
             throw new TaskValidationException("Task description cannot be empty");
+        }
+        if (completed == null) {
+            throw new TaskValidationException("Task completed cannot be null");
+        }
+    }
+
+    private void validateTaskData(String id, Boolean completed) throws TaskValidationException {
+        if (id == null || id.trim().isEmpty()) {
+            throw new TaskValidationException("Task id cannot be empty");
         }
         if (completed == null) {
             throw new TaskValidationException("Task completed cannot be null");
