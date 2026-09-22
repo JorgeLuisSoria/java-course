@@ -15,14 +15,17 @@ public class TaskView {
         this.scanner = new Scanner(System.in);
     }
 
-    public void showMenu() {
+    public void showMenu() throws TaskException {
         while (true) {
             System.out.println("\n Task Management System");
             System.out.println("1. Add Task");
             System.out.println("2. Delete Task");
             System.out.println("3. Update Task");
             System.out.println("4. View Tasks");
-            System.out.println("5. Exit");
+            System.out.println("5. Update status of Task");
+            System.out.println("6. View all Completed Tasks");
+            System.out.println("7. View all Pending Tasks");
+            System.out.println("8. Exit");
             System.out.println("Please choose an option");
 
             String choice = scanner.nextLine();
@@ -40,6 +43,15 @@ public class TaskView {
                     showTaskView();
                     break;
                 case "5":
+                    updateTaskCompletedView();
+                    break;
+                case "6":
+                    showCompletedTasksView();
+                    break;
+                case "7":
+                    showPendingTasksView();
+                    break;
+                case "8":
                     System.out.println("Leaving the system");
                     return;
                 default:
@@ -100,6 +112,50 @@ public class TaskView {
         } catch (Exception e) {
             System.out.println("Unexpected error: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    public void updateTaskCompletedView() {
+        try {
+            System.out.println("Enter task ID: ");
+            String id = scanner.nextLine();
+            Boolean completed = null;
+            while (completed == null) {
+                System.out.println("¿is it completed? (true/false): ");
+                String input = scanner.nextLine().trim().toLowerCase();
+                if (input.equals("true")) {
+                    completed = true;
+                }  else if (input.equals("false")) {
+                    completed = false;
+                } else  {
+                    System.out.println("Invalid input. Try again.");
+                }
+            }
+            taskController.updateTaskCompleted(id, completed);
+            System.out.println("Task has been updated successfully.");
+        } catch (TaskValidationException | TaskException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unexpected error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void showCompletedTasksView() throws TaskException {
+        try {
+            System.out.println("Completed Tasks");
+            taskController.showsCompletedTasks();
+        } catch (TaskException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    public void showPendingTasksView() throws TaskException {
+        try {
+            System.out.println("Pending Tasks");
+            taskController.showsPendingTasks();
+        } catch (TaskException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
